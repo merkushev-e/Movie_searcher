@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Movie Searcher</string>
     <string name="search">Search</string>
+    <string name="menu_home">Home</string>
+    <string name="favourite">favourite</string>
+    <string name="menu_slideshow">Ratings</string>
+    <string name="nav_header_desc">Avatar</string>
+    <string name="nav_header_title">Account Name</string>
+    <string name="nav_header_subtitle">Tittle</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
