@@ -10,17 +10,15 @@ import ru.gb.moviesearcher.databinding.MainFragmentBinding
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
 
-class MainFragment : Fragment() {
+class DetailFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = DetailFragment()
     }
 
     private lateinit var viewModel: MainViewModel
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var adapter: MainAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +38,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        adapter = MainAdapter()
-        binding.mainFragmentRecyclerView.adapter = adapter
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.liveData.observe(viewLifecycleOwner,
@@ -54,8 +50,7 @@ class MainFragment : Fragment() {
         when (appState) {
             is AppState.Loading -> binding.loadingLayout.visibility = View.VISIBLE
             is AppState.Success -> {
-                binding.loadingLayout.visibility = View.GONE
-                adapter.setMovie(appState.movies)
+//                binding.loadingLayout.visibility = View.GONE
 //                binding.newMoviesFilmName1.text = appState.movies.movie.movieName
 //                binding.newMoviesRatingCount.text = appState.movies.rating.toString()
 //                binding.newMoviesYearItem1.text = appState.movies.year.toString()

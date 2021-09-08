@@ -21,12 +21,8 @@ class MainViewModel : ViewModel() {
     private fun getDataFromLocalSource() {
         liveDataToObserve.value = AppState.Loading
         Thread {
-            Thread.sleep(3000)
-            if (Random.nextBoolean()) {
+            Thread.sleep(1500)
                 liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMoviesFromLocalStorage()))
-            } else {
-                liveDataToObserve.postValue(AppState.Error(Exception("Ошибка")))
-            }
         }.start()
 
     }
