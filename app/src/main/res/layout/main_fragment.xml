@@ -40,6 +40,13 @@
             android:text="Popular"
             android:textSize="30sp" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainFragmentRecyclerViewBottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/main_fragment_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

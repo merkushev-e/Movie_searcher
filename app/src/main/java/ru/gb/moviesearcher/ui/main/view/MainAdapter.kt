@@ -3,6 +3,7 @@ package ru.gb.moviesearcher.ui.main.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.moviesearcher.R
@@ -37,9 +38,15 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view){
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.new_movies_film_name).text = movie.movieName
+            var movieNameShort = movie.movieName
+            if (movieNameShort.length < 15) {
+                itemView.findViewById<TextView>(R.id.new_movies_film_name).text = movieNameShort
+            } else if (movieNameShort.length > 15){
+                itemView.findViewById<TextView>(R.id.new_movies_film_name).text = movieNameShort.substring(0,13) + ".."
+            }
             itemView.findViewById<TextView>(R.id.new_movies_year_item).text = movie.movieYear.toString()
             itemView.findViewById<TextView>(R.id.new_movies_rating_count).text = movie.movieRate.toString()
+            itemView.findViewById<ImageView>(R.id.new_movies_img_item).setImageResource(movie.moviePoster)
             itemView.setOnClickListener {
                 listener?.onItemClick(movie)
             }

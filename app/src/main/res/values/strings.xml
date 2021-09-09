@@ -10,4 +10,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="demo_movie_description">Пол Эджкомб — начальник блока смертников в тюрьме «Холодная гора», каждый из узников которого однажды проходит «зеленую милю» по пути к месту казни. Пол повидал много заключённых и надзирателей за время работы. Однако гигант Джон Коффи, обвинённый в страшном преступлении, стал одним из самых необычных обитателей блока.</string>
+    <string name="new_movies_headline_text">New Movies headline text</string>
+    <string name="demo_genre">Боевик, приюклечение</string>
+    <string name="year_2020">2020</string>
+    <string name="realease_date">Год выхода:</string>
+    <string name="rate">Рейтинг</string>
+    <string name="rate_demo_6_9">6.9</string>
 </resources>
