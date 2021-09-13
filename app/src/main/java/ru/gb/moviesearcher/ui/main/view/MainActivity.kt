@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         setContentView(binding.root)
         initView();
         if (savedInstanceState == null) {

@@ -15,8 +15,7 @@ fun getDefaultMovie(): Movie =
     Movie("Good Movie", "Description of movie", 7.2, 2020, R.drawable.movie_poster)
 
 
-fun getNewMovies(): List<Movie> {
-    return listOf(
+fun getNewMovies(): List<Movie>  = listOf(
         Movie(
             "Гнев человеческий",
             "Хмурый мужчина прикидывается инкассатором, чтобы выйти на грабителей. Гай Ричи и Джейсон Стэйтем снова вместе",
@@ -53,10 +52,8 @@ fun getNewMovies(): List<Movie> {
             R.drawable.movie_poster
         )
     )
-}
 
-fun getPopularMovies(): List<Movie>{
-    return listOf(
+fun getPopularMovies(): List<Movie> = listOf(
         Movie(
             "Зеленая миля",
             "В тюрьме для смертников появляется заключенный с божественным даром. Мистическая драма по роману Стивена Кинга",
@@ -94,6 +91,5 @@ fun getPopularMovies(): List<Movie>{
             R.drawable.wolfwalkers
         )
     )
-}
 
 
