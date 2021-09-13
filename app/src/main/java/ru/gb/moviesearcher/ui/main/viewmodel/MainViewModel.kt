@@ -10,23 +10,23 @@ import kotlin.random.Random
 class MainViewModel : ViewModel() {
 
     private val repositoryImpl: Repository = RepositoryImpl()
-    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()
+    private val liveDataToObserveNewMovies: MutableLiveData<AppState> = MutableLiveData()
+    private val liveDataToObservePopularMovies: MutableLiveData<AppState> = MutableLiveData()
 
 
-    val liveData: LiveData<AppState> = liveDataToObserve
+    val liveDataNewMovies: LiveData<AppState> = liveDataToObserveNewMovies
+    val liveDataPopularMovies: LiveData<AppState> = liveDataToObservePopularMovies
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
 
 
     private fun getDataFromLocalSource() {
-        liveDataToObserve.value = AppState.Loading
+        liveDataToObserveNewMovies.value = AppState.Loading
+        liveDataToObservePopularMovies.value = AppState.Loading
         Thread {
-            Thread.sleep(3000)
-            if (Random.nextBoolean()) {
-                liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMoviesFromLocalStorage()))
-            } else {
-                liveDataToObserve.postValue(AppState.Error(Exception("Ошибка")))
-            }
+            Thread.sleep(1000)
+            liveDataToObserveNewMovies.postValue(AppState.Success(repositoryImpl.getNewMoviesFromLocalStorage()))
+            liveDataToObservePopularMovies.postValue(AppState.Success(repositoryImpl.getPopularMoviesFromLocalStorage()))
         }.start()
 
     }

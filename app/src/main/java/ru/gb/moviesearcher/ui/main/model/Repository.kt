@@ -1,6 +1,7 @@
 package ru.gb.moviesearcher.ui.main.model
 
 interface Repository {
-    fun getMoviesFromServer(): Movies
-    fun getMoviesFromLocalStorage(): Movies
+    fun getNewMoviesFromLocalStorage(): List<Movie>
+    fun getPopularMoviesFromLocalStorage(): List<Movie>
+    fun getMoviesFromServer(): List<Movie>
 }
