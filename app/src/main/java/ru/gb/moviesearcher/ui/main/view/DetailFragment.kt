@@ -17,11 +17,16 @@ class DetailFragment : Fragment() {
 
     companion object {
         const val MOVIE_EXTRA = "Movie"
-        fun newInstance(bundle: Bundle): DetailFragment{
-            val fragment = DetailFragment()
-            fragment.arguments = bundle
-            return fragment
+//        fun newInstance(bundle: Bundle): DetailFragment{
+//            val fragment = DetailFragment()
+//            fragment.arguments = bundle
+//            return fragment
+//        }
+
+        fun newInstance(bundle: Bundle): DetailFragment = DetailFragment().apply {
+            arguments = bundle
         }
+
 
     }
 
@@ -41,16 +46,31 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movies = arguments?.getParcelable<Movie>(MOVIE_EXTRA)
-        if (movies != null){
-            binding.loadingLayout.visibility = View.GONE
-            binding.headerTitle.text = movies.movieName
-            binding.moviesYear.text = movies.movieYear.toString()
-            binding.movieRatingCount.text = movies.movieRate.toString()
-            binding.movieDescription.text = movies.movieDescription
-            binding.moviesImg.setImageResource(movies.moviePoster)
+
+        arguments?.getParcelable<Movie>(MOVIE_EXTRA)?.let { movies ->
+            with(binding) {
+                loadingLayout.visibility = View.GONE
+                headerTitle.text = movies.movieName
+                moviesYear.text = movies.movieYear.toString()
+                movieRatingCount.text = movies.movieRate.toString()
+                movieDescription.text = movies.movieDescription
+                moviesImg.setImageResource(movies.moviePoster)
+            }
+
         }
+
     }
+
+//        val movies = arguments?.getParcelable<Movie>(MOVIE_EXTRA)
+//        if (movies != null){
+//            binding.loadingLayout.visibility = View.GONE
+//            binding.headerTitle.text = movies.movieName
+//            binding.moviesYear.text = movies.movieYear.toString()
+//            binding.movieRatingCount.text = movies.movieRate.toString()
+//            binding.movieDescription.text = movies.movieDescription
+//            binding.moviesImg.setImageResource(movies.moviePoster)
+//        }
+//    }
 
 
     override fun onDestroy() {
