@@ -16,13 +16,12 @@ import ru.gb.moviesearcher.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         setContentView(binding.root)
         initView();
         if (savedInstanceState == null) {
@@ -68,9 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        var id: Int = item.itemId
-
-        when (id) {
+        when (item.itemId) {
             R.id.action_settings -> {
                 Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
                 return true

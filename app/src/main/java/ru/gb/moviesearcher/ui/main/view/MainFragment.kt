@@ -21,12 +21,18 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: MainAdapter
-    private lateinit var adapterSecond: MainAdapter
+    private val adapter: MainAdapter by lazy {
+        MainAdapter()
+    }
+    private val adapterSecond: MainAdapter by lazy {
+        MainAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,23 +52,23 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        adapter = MainAdapter()
-        adapterSecond = MainAdapter()
 
         adapter.listener = MainAdapter.OnItemViewClicksListener { movie -> showContent(movie) }
 
-        adapterSecond.listener = MainAdapter.OnItemViewClicksListener { movie -> showContent(movie)  }
+        adapterSecond.listener =
+            MainAdapter.OnItemViewClicksListener { movie -> showContent(movie) }
 
-        binding.mainFragmentRecyclerView.adapter = adapter
-        binding.mainFragmentRecyclerView.layoutManager =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        with(binding) {
+            mainFragmentRecyclerView.adapter = adapter
+            mainFragmentRecyclerView.layoutManager =
+                LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            mainFragmentRecyclerViewBottom.adapter = adapterSecond
+            mainFragmentRecyclerViewBottom.layoutManager =
+                LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        }
 
-        binding.mainFragmentRecyclerViewBottom.adapter = adapterSecond
-        binding.mainFragmentRecyclerViewBottom.layoutManager =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.liveDataNewMovies.observe(viewLifecycleOwner,
             { appState ->
                 val isNewMovies = true
@@ -80,22 +86,38 @@ class MainFragment : Fragment() {
     }
 
     private fun showContent(movie: Movie) {
-        val fragmentManager = activity?.supportFragmentManager
-        if (fragmentManager != null) {
-            val bundle = Bundle()
-            bundle.putParcelable(DetailFragment.MOVIE_EXTRA, movie)
+
+        activity?.supportFragmentManager?.let { fragmentManager ->
             fragmentManager.beginTransaction()
-                .replace(R.id.container, DetailFragment.newInstance(bundle))
+                .replace(R.id.container, DetailFragment.newInstance(Bundle().apply {
+                    putParcelable(DetailFragment.MOVIE_EXTRA, movie)
+                }))
                 .addToBackStack("")
                 .commit()
         }
+//
+//            val bundle = Bundle()
+//            bundle.putParcelable(DetailFragment.MOVIE_EXTRA, movie)
+//            fragmentManager.beginTransaction()
+//                .replace(R.id.container, DetailFragment.newInstance(bundle))
+//                .addToBackStack("")
+//                .commit()
+
+//        if (fragmentManager != null) {
+//            val bundle = Bundle()
+//            bundle.putParcelable(DetailFragment.MOVIE_EXTRA, movie)
+//            fragmentManager.beginTransaction()
+//                .replace(R.id.container, DetailFragment.newInstance(bundle))
+//                .addToBackStack("")
+//                .commit()
+//        }
     }
 
     private fun renderData(appState: AppState, isNewMovies: Boolean) {
         when (appState) {
-            is AppState.Loading -> binding.loadingLayout.visibility = View.VISIBLE
+            is AppState.Loading -> binding.loadingLayout.show()
             is AppState.Success -> {
-                binding.loadingLayout.visibility = View.GONE
+                binding.loadingLayout.hide()
                 if (isNewMovies) {
                     adapter.setMovie(appState.movies)
                 } else {
@@ -103,11 +125,17 @@ class MainFragment : Fragment() {
                 }
             }
             is AppState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(binding.mainView, "Error ${appState.error}", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
-                    .show()
+                binding.loadingLayout.hide()
+                binding.mainView.showSnackBar(
+                    "Error ${appState.error}",
+                    "Reload",
+                    { viewModel.getMovieFromLocalSource() },
+                )
+
+//                Snackbar
+//                    .make(binding.mainView, "Error ${appState.error}", Snackbar.LENGTH_INDEFINITE)
+//                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
+//                    .show()
             }
         }
     }

@@ -1,16 +1,10 @@
 package ru.gb.moviesearcher.ui.main.model
 
 class RepositoryImpl : Repository {
-    override fun getNewMoviesFromLocalStorage(): List<Movie> {
-        return getNewMovies()
-    }
+    override fun getNewMoviesFromLocalStorage(): List<Movie> = getNewMovies()
 
-    override fun getPopularMoviesFromLocalStorage(): List<Movie> {
-        return getPopularMovies()
-    }
+    override fun getPopularMoviesFromLocalStorage(): List<Movie> = getPopularMovies()
 
-    override fun getMoviesFromServer(): List<Movie> {
-        return getNewMovies()
-    }
+    override fun getMoviesFromServer(): List<Movie> = getNewMovies()
 
 }
