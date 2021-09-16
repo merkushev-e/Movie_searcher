@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 import javax.net.ssl.HttpsURLConnection
 
 class MoviesLoader(
-    private val movie: Double,
+    private val movieId: Int,
     private val listener: MovieLoaderListener
 
 ) {
@@ -20,9 +20,8 @@ class MoviesLoader(
     fun goToInternet() {
         var urlConnection: HttpsURLConnection? = null
         Thread {
-//            var uri = URL("https://api.themoviedb.org/3/movie/550?api_key=5a9755a312233a2e4518996cadd72e16")
             var uri =
-                URL("https://api.themoviedb.org/3/movie/550?api_key=5a9755a312233a2e4518996cadd72e16")
+                URL("https://api.themoviedb.org/3/movie/${movieId}?api_key=5a9755a312233a2e4518996cadd72e16")
             try {
                 urlConnection = uri.openConnection() as HttpsURLConnection
                 urlConnection?.apply {
@@ -33,6 +32,8 @@ class MoviesLoader(
                 val result = reader.lines().collect(Collectors.joining("\n"))
 
                 val movieDTO: MovieDTO = Gson().fromJson(result, MovieDTO::class.java)
+
+                listener.onLoaded(movieDTO)
 
             } catch (e: Exception){
                 listener.onFailed(e)

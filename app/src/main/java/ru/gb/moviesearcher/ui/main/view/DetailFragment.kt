@@ -1,17 +1,16 @@
 package ru.gb.moviesearcher.ui.main.view
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.core.os.bundleOf
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.DetailFragmentBinding
-import ru.gb.moviesearcher.databinding.MainFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.Movie
-import ru.gb.moviesearcher.ui.main.viewmodel.AppState
-import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
+import ru.gb.moviesearcher.ui.main.model.MovieDTO
+import ru.gb.moviesearcher.ui.main.model.MoviesLoader
 
 class DetailFragment : Fragment() {
 
@@ -43,6 +42,7 @@ class DetailFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,11 +50,32 @@ class DetailFragment : Fragment() {
         arguments?.getParcelable<Movie>(MOVIE_EXTRA)?.let { movies ->
             with(binding) {
                 loadingLayout.visibility = View.GONE
-                headerTitle.text = movies.movieName
-                moviesYear.text = movies.movieYear.toString()
-                movieRatingCount.text = movies.movieRate.toString()
-                movieDescription.text = movies.movieDescription
+//                headerTitle.text = movies.movieName
+//                moviesYear.text = movies.movieYear.toString()
+//                movieRatingCount.text = movies.movieRate.toString()
+//                movieDescription.text = movies.movieDescription
                 moviesImg.setImageResource(movies.moviePoster)
+
+                val moviesLoader = MoviesLoader(
+                    movies.movieId,
+                    object : MoviesLoader.MovieLoaderListener {
+                        override fun onLoaded(movieDTO: MovieDTO) {
+                            requireActivity().runOnUiThread {
+                                displayMovie(movieDTO)
+                            }
+                        }
+
+                        override fun onFailed(throwable: Throwable) {
+                            requireActivity().runOnUiThread {
+                                Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+
+
+                    }
+                )
+                moviesLoader.goToInternet()
             }
 
         }
@@ -72,6 +93,15 @@ class DetailFragment : Fragment() {
 //        }
 //    }
 
+
+    fun displayMovie(movie: MovieDTO) {
+        with(binding) {
+            headerTitle.text = movie.original_title
+            moviesYear.text = movie.release_date.toString()
+            movieRatingCount.text = movie.vote_average.toString()
+            movieDescription.text = movie.overview
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
