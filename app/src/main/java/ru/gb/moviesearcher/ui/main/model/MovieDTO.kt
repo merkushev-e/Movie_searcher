@@ -1,7 +1,6 @@
 package ru.gb.moviesearcher.ui.main.model
 
 data class MovieDTO(
-
     val original_title: String?,
     val overview: String?,
     val id: Int?,

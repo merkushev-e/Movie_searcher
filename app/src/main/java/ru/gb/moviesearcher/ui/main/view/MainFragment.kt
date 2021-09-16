@@ -13,6 +13,7 @@ import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.MainFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.Movie
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
+import ru.gb.moviesearcher.ui.main.viewmodel.AppStateRemote
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -112,6 +113,8 @@ class MainFragment : Fragment() {
 //                .commit()
 //        }
     }
+
+
 
     private fun renderData(appState: AppState, isNewMovies: Boolean) {
         when (appState) {

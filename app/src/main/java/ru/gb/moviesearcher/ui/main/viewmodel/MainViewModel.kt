@@ -18,6 +18,7 @@ class MainViewModel : ViewModel() {
     val liveDataPopularMovies: LiveData<AppState> = liveDataToObservePopularMovies
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
+    fun getMovieFromInternet() = getDataFromInternet()
 
 
     private fun getDataFromLocalSource() {
@@ -29,6 +30,14 @@ class MainViewModel : ViewModel() {
             liveDataToObservePopularMovies.postValue(AppState.Success(repositoryImpl.getPopularMoviesFromLocalStorage()))
         }.start()
 
+    }
+    private fun getDataFromInternet(){
+        liveDataToObserveNewMovies.value = AppStateRemote.Loading
+        liveDataToObservePopularMovies.value = AppStateRemote.Loading
+        Thread {
+            liveDataToObserveNewMovies.postValue(AppStateRemote.Success(repositoryImpl.getNewMoviesFromServer()))
+            liveDataToObservePopularMovies.postValue(AppStateRemote.Success(repositoryImpl.getPopularMoviesFromServer()))
+        }.start()
     }
 }
 

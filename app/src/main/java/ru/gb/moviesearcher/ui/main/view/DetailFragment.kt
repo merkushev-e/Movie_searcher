@@ -50,10 +50,6 @@ class DetailFragment : Fragment() {
         arguments?.getParcelable<Movie>(MOVIE_EXTRA)?.let { movies ->
             with(binding) {
                 loadingLayout.visibility = View.GONE
-//                headerTitle.text = movies.movieName
-//                moviesYear.text = movies.movieYear.toString()
-//                movieRatingCount.text = movies.movieRate.toString()
-//                movieDescription.text = movies.movieDescription
                 moviesImg.setImageResource(movies.moviePoster)
 
                 val moviesLoader = MoviesLoader(
