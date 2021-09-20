@@ -10,6 +10,7 @@ import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.DetailFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.Movie
 import ru.gb.moviesearcher.ui.main.model.MovieDTO
+import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 import ru.gb.moviesearcher.ui.main.model.MoviesLoader
 
 class DetailFragment : Fragment() {
@@ -31,6 +32,7 @@ class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
+    private lateinit var movie: MoviesListDTO.MovieList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,27 +49,31 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        arguments?.getParcelable<Movie>(MOVIE_EXTRA)?.let { movies ->
+        arguments?.getParcelable<MoviesListDTO.MovieList>(MOVIE_EXTRA)?.let { movies ->
+
             with(binding) {
                 loadingLayout.visibility = View.GONE
 //                headerTitle.text = movies.movieName
 //                moviesYear.text = movies.movieYear.toString()
 //                movieRatingCount.text = movies.movieRate.toString()
 //                movieDescription.text = movies.movieDescription
-                moviesImg.setImageResource(movies.moviePoster)
+//                moviesImg.setImageResource(movies.moviePoster)
 
                 val moviesLoader = MoviesLoader(
-                    movies.movieId,
+                    movies.id,
                     object : MoviesLoader.MovieLoaderListener {
                         override fun onLoaded(movieDTO: MovieDTO) {
-                            requireActivity().runOnUiThread {
-                                displayMovie(movieDTO)
-                            }
+
+                            displayMovie(movieDTO)
                         }
 
                         override fun onFailed(throwable: Throwable) {
                             requireActivity().runOnUiThread {
-                                Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    context,
+                                    throwable.localizedMessage,
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         }
@@ -96,10 +102,13 @@ class DetailFragment : Fragment() {
 
     fun displayMovie(movie: MovieDTO) {
         with(binding) {
-            headerTitle.text = movie.original_title
-            moviesYear.text = movie.release_date.toString()
+            headerTitle.text = movie.title
+            moviesYear.text = movie.release_date.toString().substring(0,4)
             movieRatingCount.text = movie.vote_average.toString()
             movieDescription.text = movie.overview
+                for( el in movie.genres){
+                    movieGenre.text = el.name.toString()
+                }
         }
     }
 

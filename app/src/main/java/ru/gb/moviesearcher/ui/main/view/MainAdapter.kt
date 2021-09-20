@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.ui.main.model.Movie
 import ru.gb.moviesearcher.ui.main.model.Movies
+import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    var moviesData: List<Movie> = listOf()
+    var moviesData: List<MoviesListDTO.MovieList> = listOf()
 
-    fun setMovie(movies: List<Movie>){
+    fun setMovie(movies: List<MoviesListDTO.MovieList>){
         moviesData = movies
         notifyDataSetChanged()
     }
@@ -37,17 +38,17 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        fun bind(movie: Movie) {
-            val movieNameShort = movie.movieName
+        fun bind(movie: MoviesListDTO.MovieList) {
+            val movieNameShort = movie.title
             if (movieNameShort.length < 15) {
                 itemView.findViewById<TextView>(R.id.new_movies_film_name).text = movieNameShort
             } else if (movieNameShort.length > 15){
                 itemView.findViewById<TextView>(R.id.new_movies_film_name).text = movieNameShort.substring(0,13) + ".."
             }
             itemView.apply {
-                findViewById<TextView>(R.id.new_movies_year_item).text = movie.movieYear.toString()
-                findViewById<TextView>(R.id.new_movies_rating_count).text = movie.movieRate.toString()
-                findViewById<ImageView>(R.id.new_movies_img_item).setImageResource(movie.moviePoster)
+                findViewById<TextView>(R.id.new_movies_year_item).text = movie.release_date.substring(0,4)
+                findViewById<TextView>(R.id.new_movies_rating_count).text = movie.vote_average.toString()
+//                findViewById<ImageView>(R.id.new_movies_img_item).setImageResource(movie.moviePoster)
                 setOnClickListener {
                     listener?.onItemClick(movie)
                 }
@@ -58,7 +59,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     }
 
     fun interface OnItemViewClicksListener{
-        fun onItemClick(movie: Movie)
+        fun onItemClick(movie: MoviesListDTO.MovieList)
     }
 
 

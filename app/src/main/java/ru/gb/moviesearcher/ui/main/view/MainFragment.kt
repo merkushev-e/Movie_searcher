@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.MainFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.Movie
+import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
 
@@ -82,10 +83,10 @@ class MainFragment : Fragment() {
                 renderData(appState, isNewMovies)
             })
 
-        viewModel.getMovieFromLocalSource()
+        viewModel.getMovieFromInternet()
     }
 
-    private fun showContent(movie: Movie) {
+    private fun showContent(movie: MoviesListDTO.MovieList) {
 
         activity?.supportFragmentManager?.let { fragmentManager ->
             fragmentManager.beginTransaction()
@@ -119,9 +120,9 @@ class MainFragment : Fragment() {
             is AppState.Success -> {
                 binding.loadingLayout.hide()
                 if (isNewMovies) {
-                    adapter.setMovie(appState.movies)
+                    adapter.setMovie(appState.movieDTO.results)
                 } else {
-                    adapterSecond.setMovie(appState.movies)
+                    adapterSecond.setMovie(appState.movieDTO.results)
                 }
             }
             is AppState.Error -> {
@@ -129,7 +130,7 @@ class MainFragment : Fragment() {
                 binding.mainView.showSnackBar(
                     "Error ${appState.error}",
                     "Reload",
-                    { viewModel.getMovieFromLocalSource() },
+                    { viewModel.getMovieFromInternet() },
                 )
 
 //                Snackbar

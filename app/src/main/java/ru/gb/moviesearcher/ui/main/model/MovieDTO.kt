@@ -1,17 +1,21 @@
 package ru.gb.moviesearcher.ui.main.model
 
-data class MovieDTO(
+import android.os.Parcelable
+import android.provider.MediaStore
+import kotlinx.android.parcel.Parcelize
 
-    val original_title: String?,
+@Parcelize
+data class MovieDTO(
+    val genres: List<GenresDTO>,
     val overview: String?,
     val id: Int?,
     val release_date: String?,
     val title: String?,
     val vote_average: Double?,
-)
-//    ) {
-//        data class GenresDTO(
-//                val id: Int?,
-//                val name: String?
-//        )
-//}
+) : Parcelable {
+    @Parcelize
+    data class GenresDTO(
+        val id: Int?,
+        val name: String?
+    ): Parcelable
+}
