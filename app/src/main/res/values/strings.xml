@@ -14,7 +14,7 @@
     <string name="new_movies_headline_text">New Movies headline text</string>
     <string name="demo_genre">Боевик, приюклечение</string>
     <string name="year_2020">2020</string>
-    <string name="realease_date">Год выхода:</string>
-    <string name="rate">Рейтинг</string>
+    <string name="release_date">Release year: </string>
+    <string name="rate">Rating </string>
     <string name="rate_demo_6_9">6.9</string>
 </resources>

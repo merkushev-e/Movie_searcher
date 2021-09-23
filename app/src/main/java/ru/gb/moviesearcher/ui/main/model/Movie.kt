@@ -9,5 +9,6 @@ data class Movie(
     val movieDescription: String,
     val movieRate: Double,
     val movieYear: Int,
-    val moviePoster: Int
+    val moviePoster: Int,
+    val movieId: Int
 ) : Parcelable

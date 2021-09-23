@@ -1,10 +1,21 @@
 package ru.gb.moviesearcher.ui.main.model
 
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+
 class RepositoryImpl : Repository {
-    override fun getNewMoviesFromLocalStorage(): List<Movie> = getNewMovies()
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun getNewMoviesFromServer(listener: MovieListLoader.MovieLoaderListener) {
+        val movieListLoader = MovieListLoader(listener)
+        movieListLoader.goToInternet(isNewMovies = true)
+    }
 
-    override fun getPopularMoviesFromLocalStorage(): List<Movie> = getPopularMovies()
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun getPopularMoviesFromServe(listener: MovieListLoader.MovieLoaderListener) {
+        val movieListLoader = MovieListLoader(listener)
+        movieListLoader.goToInternet(isNewMovies = false)
+    }
 
-    override fun getMoviesFromServer(): List<Movie> = getNewMovies()
 
 }
