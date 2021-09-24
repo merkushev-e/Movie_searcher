@@ -166,6 +166,8 @@ class DetailFragment : Fragment() {
         }
 
 
+
+
     private fun getMovie(id: Int) {
 
         binding.loadingLayout.visibility = View.VISIBLE

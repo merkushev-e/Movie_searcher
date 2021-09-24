@@ -1,20 +1,37 @@
 package ru.gb.moviesearcher.ui.main.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.navigation.NavigationView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.ActivityMainBinding
+import ru.gb.moviesearcher.ui.main.model.DETAILS_INTENT_FILTER
+import ru.gb.moviesearcher.ui.main.model.MainBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
+
+
+   private val localMainBroadcastReceiver = MainBroadcastReceiver()
+
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -23,13 +40,28 @@ class MainActivity : AppCompatActivity() {
 //        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         initView();
+        initNotificationChannel();
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
         }
 
+
+    }
+
+
+    private fun initNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val importance: Int = NotificationManager.IMPORTANCE_LOW
+            val channel: NotificationChannel = NotificationChannel("1","name", importance)
+            notificationManager.createNotificationChannel(channel)
+        }
 
     }
 
@@ -110,7 +142,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.nav_favourite -> {
-                Toast.makeText(applicationContext, "Favourites has opened", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Favourites has opened", Toast.LENGTH_SHORT)
+                    .show()
                 return true
             }
 
@@ -121,6 +154,10 @@ class MainActivity : AppCompatActivity() {
 
         }
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 

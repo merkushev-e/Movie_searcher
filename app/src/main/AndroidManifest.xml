@@ -11,6 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
+
+        <receiver android:name=".ui.main.model.MainBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.AIRPLANE_MODE"/>
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".ui.main.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ui.main.model.DetailsService"/>
+        <service android:name=".ui.main.model.DetailsService" />
     </application>
 
 </manifest>
