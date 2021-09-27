@@ -17,4 +17,6 @@
     <string name="release_date">Release year: </string>
     <string name="rate">Rating </string>
     <string name="rate_demo_6_9">6.9</string>
+    <string name="error">Error</string>
+    <string name="reload">Reload</string>
 </resources>

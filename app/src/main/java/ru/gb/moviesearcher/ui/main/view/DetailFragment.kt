@@ -1,31 +1,26 @@
 package ru.gb.moviesearcher.ui.main.view
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.ViewModelProvider
+import ru.gb.moviesearcher.BuildConfig
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.DetailFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.*
+import ru.gb.moviesearcher.ui.main.viewmodel.AppState
+import ru.gb.moviesearcher.ui.main.viewmodel.DetailsViewModel
+
+
+
 
 class DetailFragment : Fragment() {
 
     companion object {
         const val MOVIE_EXTRA = "Movie"
-//        fun newInstance(bundle: Bundle): DetailFragment{
-//            val fragment = DetailFragment()
-//            fragment.arguments = bundle
-//            return fragment
-//        }
-
         fun newInstance(bundle: Bundle): DetailFragment = DetailFragment().apply {
             arguments = bundle
         }
@@ -33,39 +28,15 @@ class DetailFragment : Fragment() {
 
     }
 
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
+    }
+
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var movie: MoviesListDTO.MovieList
 
-    private val localResultBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
 
-            Log.d("Debug", "onReceive message  ${Thread.currentThread()}")
-
-            when (intent?.getStringExtra(RESULT_EXTRA)) {
-                SUCCESS_RESULT -> {
-                    intent.getParcelableExtra<MovieDTO>(MOVIE_DTO_EXTRA)?.let { movieDTO ->
-                        displayMovie(movieDTO)
-                    }
-                }
-
-                else -> {
-                    binding.mainView.showSnackBar("Error", "Reload", { })
-                }
-            }
-
-        }
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("Debug", "Register Receiver  ${Thread.currentThread()}")
-
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(localResultBroadcastReceiver, IntentFilter(DETAILS_INTENT_FILTER))
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,102 +51,55 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getParcelable<MoviesListDTO.MovieList>(MOVIE_EXTRA).let {
+       movie = arguments?.getParcelable(MOVIE_EXTRA) ?: MoviesListDTO.MovieList()
+        viewModel.liveData.observe(viewLifecycleOwner) { AppState ->
+            renderData(AppState)
+        }
+        viewModel.getMovieFromRemoteSource(movie)
+    }
 
-            binding.loadingLayout.visibility = View.GONE
-            binding.mainView.visibility = View.VISIBLE
-            if (it != null) {
-                getMovie(it.id)
+
+    private fun renderData(state: AppState) {
+        when (state) {
+            is AppState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.mainView.visibility = View.GONE
             }
-        }
+            is AppState.SuccessDetails -> {
+                binding.mainView.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
 
+                val movieDTO = state.movieDTO
 
-//        arguments?.getParcelable<MoviesListDTO.MovieList>(MOVIE_EXTRA)?.let { movies ->
-
-//            with(binding) {
-//                loadingLayout.visibility = View.GONE
-//                headerTitle.text = movies.movieName
-//                moviesYear.text = movies.movieYear.toString()
-//                movieRatingCount.text = movies.movieRate.toString()
-//                movieDescription.text = movies.movieDescription
-//                moviesImg.setImageResource(movies.moviePoster)
-
-//                val moviesLoader = MoviesLoader(
-//                    movies.id,
-//                    object : MoviesLoader.MovieLoaderListener {
-//                        override fun onLoaded(movieDTO: MovieDTO) {
-//
-//                            displayMovie(movieDTO)
-//                        }
-//
-//                        override fun onFailed(throwable: Throwable) {
-//                            requireActivity().runOnUiThread {
-//                                Toast.makeText(
-//                                    context,
-//                                    throwable.localizedMessage,
-//                                    Toast.LENGTH_SHORT
-//                                )
-//                                    .show()
-//                            }
-//                        }
-//
-//
-//                    }
-//                )
-//                moviesLoader.goToInternet()
-//            }
-//
-//        }
-//
-//    }
-
-//        val movies = arguments?.getParcelable<Movie>(MOVIE_EXTRA)
-//        if (movies != null){
-//            binding.loadingLayout.visibility = View.GONE
-//            binding.headerTitle.text = movies.movieName
-//            binding.moviesYear.text = movies.movieYear.toString()
-//            binding.movieRatingCount.text = movies.movieRate.toString()
-//            binding.movieDescription.text = movies.movieDescription
-//            binding.moviesImg.setImageResource(movies.moviePoster)
-//        }
-        }
-
-
-        fun displayMovie(movie: MovieDTO) {
-
-            binding.loadingLayout.visibility = View.GONE
-            binding.mainView.visibility = View.VISIBLE
-            with(binding) {
-                headerTitle.text = movie.title
-                moviesYear.text = movie.release_date.toString().substring(0, 4)
-                movieRatingCount.text = movie.vote_average.toString()
-                movieDescription.text = movie.overview
-                for (el in movie.genres) {
-                    movieGenre.text = el.name.toString()
+                with(binding) {
+                    headerTitle.text = movieDTO.title
+                    moviesYear.text = movieDTO.release_date.toString().substring(0, 4)
+                    movieRatingCount.text = movieDTO.vote_average.toString()
+                    movieDescription.text = movieDTO.overview
+                    for (el in movieDTO.genres) {
+                        movieGenre.text = el.name.toString()
+                    }
                 }
             }
+
+            is AppState.Error -> {
+                binding.mainView.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
+                binding.mainView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    {viewModel.getMovieFromRemoteSource(movie)}
+                    //            requestLink + "${id}?api_key=${BuildConfig.MOVIE_DB_API_KEY}"
+                )
+            }
         }
 
-
-        override fun onDestroy() {
-            super.onDestroy()
-            _binding = null
-
-            LocalBroadcastManager.getInstance(requireContext())
-                .unregisterReceiver(localResultBroadcastReceiver)
-        }
-
-
-
-
-    private fun getMovie(id: Int) {
-
-        binding.loadingLayout.visibility = View.VISIBLE
-        binding.mainView.visibility = View.GONE
-        Log.d("Debug", "Start service ${Thread.currentThread()}")
-
-        requireActivity().startService(Intent(requireContext(), DetailsService::class.java).apply {
-            putExtra(MOVIE_ID_EXTRA,id)
-        })
     }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }
