@@ -7,6 +7,7 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import ru.gb.moviesearcher.BuildConfig
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.DetailFragmentBinding
@@ -68,7 +69,7 @@ class DetailFragment : Fragment() {
             is AppState.SuccessDetails -> {
                 binding.mainView.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
-
+                binding.moviesImg.load("https://image.tmdb.org/t/p/w500/${state.movieDTO.poster_path}")
                 val movieDTO = state.movieDTO
 
                 with(binding) {

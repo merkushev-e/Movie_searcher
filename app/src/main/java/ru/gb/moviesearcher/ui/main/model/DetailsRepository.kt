@@ -1,9 +1,12 @@
 package ru.gb.moviesearcher.ui.main.model
 
-import okhttp3.Callback
+import retrofit2.Callback
+
 
 interface DetailsRepository {
 
-    fun getMovieDetailsFromServer(requestLink: String, callback: Callback)
-
+    fun getMovieDetailsFromServer(
+        movieId: Int,
+        callback: Callback<MovieDTO>
+    )
 }

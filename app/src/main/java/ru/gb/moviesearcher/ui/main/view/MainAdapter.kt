@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.ui.main.model.Movie
 import ru.gb.moviesearcher.ui.main.model.Movies
@@ -48,6 +49,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
             itemView.apply {
                 findViewById<TextView>(R.id.new_movies_year_item).text = movie.release_date.substring(0,4)
                 findViewById<TextView>(R.id.new_movies_rating_count).text = movie.vote_average.toString()
+                findViewById<ImageView>(R.id.new_movies_img_item).load("https://image.tmdb.org/t/p/w500/${movie.poster_path}")
 //                findViewById<ImageView>(R.id.new_movies_img_item).setImageResource(movie.moviePoster)
                 setOnClickListener {
                     listener?.onItemClick(movie)
