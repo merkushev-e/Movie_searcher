@@ -3,6 +3,7 @@ package ru.gb.moviesearcher.ui.main.model
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.flow.callbackFlow
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,6 +24,13 @@ class RemoteDataSource {
 
     fun getMovieDetails(movieId: Int, callback: Callback<MovieDTO>) {
         movieAPI.getMovie(movieId, BuildConfig.MOVIE_DB_API_KEY).enqueue(callback)
+    }
+    fun getNewMovieDetails(page: Int, callback: Callback<MoviesListDTO>){
+        movieAPI.getNewMovie(BuildConfig.MOVIE_DB_API_KEY, page).enqueue(callback)
+    }
+
+    fun getPopularMovieDetails(page: Int, callback: Callback<MoviesListDTO>){
+        movieAPI.getPopularMovie(BuildConfig.MOVIE_DB_API_KEY, page).enqueue(callback)
     }
 
 

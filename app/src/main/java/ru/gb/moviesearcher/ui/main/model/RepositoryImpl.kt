@@ -3,19 +3,15 @@ package ru.gb.moviesearcher.ui.main.model
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import retrofit2.Callback
 
-class RepositoryImpl : Repository {
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun getNewMoviesFromServer(listener: MovieListLoader.MovieLoaderListener) {
-        val movieListLoader = MovieListLoader(listener)
-        movieListLoader.goToInternet(isNewMovies = true)
+class RepositoryImpl(private val remoteDataSource: RemoteDataSource) : Repository {
+    override fun getNewMoviesFromServer(page: Int, callback: Callback<MoviesListDTO>) {
+        remoteDataSource.getNewMovieDetails(page, callback)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun getPopularMoviesFromServe(listener: MovieListLoader.MovieLoaderListener) {
-        val movieListLoader = MovieListLoader(listener)
-        movieListLoader.goToInternet(isNewMovies = false)
+    override fun getPopularMoviesFromServer(page: Int, callback: Callback<MoviesListDTO>) {
+        remoteDataSource.getPopularMovieDetails(page,callback)
     }
-
 
 }

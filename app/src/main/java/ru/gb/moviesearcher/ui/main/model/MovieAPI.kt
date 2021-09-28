@@ -11,4 +11,17 @@ interface MovieAPI {
         @Path("id") id: Int,
         @Query("api_key") apiKey: String,
         ): Call<MovieDTO>
+
+
+    @GET("3/movie/upcoming?")
+    fun getNewMovie(
+        @Query("api_key") api_key: String,
+        @Query("page") page: Int
+    ): Call<MoviesListDTO>
+
+    @GET("3/movie/popular?")
+    fun getPopularMovie(
+        @Query("api_key") api_key: String,
+        @Query("page") page: Int
+    ): Call<MoviesListDTO>
 }

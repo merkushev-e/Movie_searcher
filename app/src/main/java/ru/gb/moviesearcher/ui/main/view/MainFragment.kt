@@ -16,6 +16,8 @@ import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
 
+private const val FIRST_PAGE = 1;
+
 class MainFragment : Fragment() {
 
     companion object {
@@ -84,7 +86,7 @@ class MainFragment : Fragment() {
                 renderData(appState, isNewMovies)
             })
 
-        viewModel.getMovieFromInternet()
+        viewModel.getMovieFromInternet(FIRST_PAGE)
     }
 
     private fun showContent(movie: MoviesListDTO.MovieList) {
@@ -97,22 +99,7 @@ class MainFragment : Fragment() {
                 .addToBackStack("")
                 .commit()
         }
-//
-//            val bundle = Bundle()
-//            bundle.putParcelable(DetailFragment.MOVIE_EXTRA, movie)
-//            fragmentManager.beginTransaction()
-//                .replace(R.id.container, DetailFragment.newInstance(bundle))
-//                .addToBackStack("")
-//                .commit()
 
-//        if (fragmentManager != null) {
-//            val bundle = Bundle()
-//            bundle.putParcelable(DetailFragment.MOVIE_EXTRA, movie)
-//            fragmentManager.beginTransaction()
-//                .replace(R.id.container, DetailFragment.newInstance(bundle))
-//                .addToBackStack("")
-//                .commit()
-//        }
     }
 
     private fun renderData(appState: AppState, isNewMovies: Boolean) {
@@ -131,13 +118,8 @@ class MainFragment : Fragment() {
                 binding.mainView.showSnackBar(
                     "Error ${appState.error}",
                     "Reload",
-                    { viewModel.getMovieFromInternet() },
+                    { viewModel.getMovieFromInternet(FIRST_PAGE) },
                 )
-
-//                Snackbar
-//                    .make(binding.mainView, "Error ${appState.error}", Snackbar.LENGTH_INDEFINITE)
-//                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
-//                    .show()
             }
         }
     }

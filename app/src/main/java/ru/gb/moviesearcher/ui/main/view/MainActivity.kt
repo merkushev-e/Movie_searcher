@@ -20,17 +20,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+
 import com.google.android.material.navigation.NavigationView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.ActivityMainBinding
-import ru.gb.moviesearcher.ui.main.model.DETAILS_INTENT_FILTER
+
 import ru.gb.moviesearcher.ui.main.model.MainBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
 
 
-   private val localMainBroadcastReceiver = MainBroadcastReceiver()
 
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }

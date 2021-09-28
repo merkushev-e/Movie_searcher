@@ -3,15 +3,19 @@ package ru.gb.moviesearcher.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.gb.moviesearcher.ui.main.model.MovieListLoader
-import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
-import ru.gb.moviesearcher.ui.main.model.Repository
-import ru.gb.moviesearcher.ui.main.model.RepositoryImpl
-import kotlin.random.Random
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import ru.gb.moviesearcher.ui.main.model.*
+
+
+private const val SERVER_ERROR = "SERVER ERROR"
+private const val REQUEST_ERROR = "REQUEST ERROR"
+
 
 class MainViewModel : ViewModel() {
 
-    private val repositoryImpl: Repository = RepositoryImpl()
+    private val repositoryImpl: Repository = RepositoryImpl(RemoteDataSource())
     private val liveDataToObserveNewMovies: MutableLiveData<AppState> = MutableLiveData()
     private val liveDataToObservePopularMovies: MutableLiveData<AppState> = MutableLiveData()
 
@@ -20,34 +24,63 @@ class MainViewModel : ViewModel() {
     val liveDataPopularMovies: LiveData<AppState> = liveDataToObservePopularMovies
 
 
+    fun getMovieFromInternet(page: Int) = getMovieFromRemoteSource(page)
 
-    fun getMovieFromInternet() = getDataFromInternet()
 
-
-    private fun getDataFromInternet() {
+    private fun getMovieFromRemoteSource(page: Int) {
         liveDataToObserveNewMovies.value = AppState.Loading
+        repositoryImpl.getNewMoviesFromServer(page, callBackNew)
         liveDataToObservePopularMovies.value = AppState.Loading
-        repositoryImpl.getNewMoviesFromServer(object : MovieListLoader.MovieLoaderListener{
-            override fun onLoaded(movie: MoviesListDTO) {
-                liveDataToObserveNewMovies.postValue(AppState.Success(movie))
-            }
-
-            override fun onFailed(throwable: Throwable) {
-                liveDataToObserveNewMovies.postValue(AppState.Error(throwable))
-            }
-
-        })
-
-        repositoryImpl.getPopularMoviesFromServe(object : MovieListLoader.MovieLoaderListener{
-            override fun onLoaded(movie: MoviesListDTO) {
-                liveDataToObservePopularMovies.postValue(AppState.Success(movie))
-            }
-
-            override fun onFailed(throwable: Throwable) {
-                liveDataToObservePopularMovies.postValue(AppState.Error(throwable))
-            }
-
-        })
+        repositoryImpl.getPopularMoviesFromServer(page, callBackPopular)
     }
-}
+
+
+    private val callBackNew = object : Callback<MoviesListDTO> {
+
+        override fun onResponse(call: Call<MoviesListDTO>, response: Response<MoviesListDTO>) {
+            val serverResponse: MoviesListDTO? = response.body()
+            liveDataToObserveNewMovies.postValue(
+                if (response.isSuccessful && serverResponse != null) {
+                    checkResponse(serverResponse)
+                } else {
+                    AppState.Error(Throwable(SERVER_ERROR))
+                }
+            )
+        }
+
+        override fun onFailure(call: Call<MoviesListDTO>, t: Throwable) {
+            liveDataToObserveNewMovies.postValue(
+                AppState.Error(Throwable(t.message ?: REQUEST_ERROR))
+            )
+        }
+    }
+
+        private val callBackPopular = object : Callback<MoviesListDTO> {
+
+            override fun onResponse(call: Call<MoviesListDTO>, response: Response<MoviesListDTO>) {
+                val serverResponse: MoviesListDTO? = response.body()
+                liveDataToObservePopularMovies.postValue(
+                    if (response.isSuccessful && serverResponse != null) {
+                        checkResponse(serverResponse)
+                    } else {
+                        AppState.Error(Throwable(SERVER_ERROR))
+                    }
+                )
+            }
+
+            override fun onFailure(call: Call<MoviesListDTO>, t: Throwable) {
+                liveDataToObservePopularMovies.postValue(
+                    AppState.Error(
+                        Throwable(
+                            t.message ?: REQUEST_ERROR))
+                        )
+            }
+        }
+
+        private fun checkResponse(serverResponse: MoviesListDTO): AppState {
+            val moviesListDTO: MoviesListDTO = serverResponse
+            return AppState.Success(moviesListDTO)
+        }
+
+    }
 

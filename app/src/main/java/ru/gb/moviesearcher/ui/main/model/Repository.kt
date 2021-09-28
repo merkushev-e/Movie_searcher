@@ -1,6 +1,9 @@
 package ru.gb.moviesearcher.ui.main.model
 
+import retrofit2.Callback
+
 interface Repository {
-    fun getNewMoviesFromServer(listener: MovieListLoader.MovieLoaderListener)
-    fun getPopularMoviesFromServe(listener: MovieListLoader.MovieLoaderListener)
+
+    fun getNewMoviesFromServer(page: Int, callback: Callback<MoviesListDTO>)
+    fun getPopularMoviesFromServer(page: Int, callback: Callback<MoviesListDTO>)
 }
