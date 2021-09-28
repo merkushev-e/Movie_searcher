@@ -3,15 +3,14 @@ package ru.gb.moviesearcher.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import ru.gb.moviesearcher.BuildConfig
 import ru.gb.moviesearcher.ui.main.model.*
-
-import java.io.IOException
+import ru.gb.moviesearcher.ui.main.repository.DetailsRepository
+import ru.gb.moviesearcher.ui.main.repository.DetailsRepositoryImpl
+import ru.gb.moviesearcher.ui.main.repository.RemoteDataSource
 
 
 private const val SERVER_ERROR = "SERVER ERROR"

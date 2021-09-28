@@ -3,17 +3,11 @@ package ru.gb.moviesearcher.ui.main.view
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -24,8 +18,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.ActivityMainBinding
+import ru.gb.moviesearcher.ui.main.view.main.MainFragment
 
-import ru.gb.moviesearcher.ui.main.model.MainBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main, menu)
 
-        val search = menu!!.findItem(R.id.action_search)//разобраться с !! и ?
+        val search = menu!!.findItem(R.id.action_search)
         val searchText: SearchView = search.actionView as SearchView
         searchText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

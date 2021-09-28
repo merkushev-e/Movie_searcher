@@ -12,8 +12,7 @@ import ru.gb.moviesearcher.R
 class MainBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-//        Toast.makeText(context,"RECEIVER", Toast.LENGTH_SHORT).show()
+
         val builder = NotificationCompat.Builder(context,"1")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("Movie Searcher")

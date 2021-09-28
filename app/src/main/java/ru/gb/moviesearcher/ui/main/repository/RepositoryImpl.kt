@@ -1,9 +1,7 @@
-package ru.gb.moviesearcher.ui.main.model
+package ru.gb.moviesearcher.ui.main.repository
 
-import android.os.Build
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import retrofit2.Callback
+import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 
 class RepositoryImpl(private val remoteDataSource: RemoteDataSource) : Repository {
     override fun getNewMoviesFromServer(page: Int, callback: Callback<MoviesListDTO>) {

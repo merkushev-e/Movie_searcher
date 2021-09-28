@@ -1,6 +1,7 @@
-package ru.gb.moviesearcher.ui.main.model
+package ru.gb.moviesearcher.ui.main.repository
 
 import retrofit2.Callback
+import ru.gb.moviesearcher.ui.main.model.MovieDTO
 
 
 interface DetailsRepository {

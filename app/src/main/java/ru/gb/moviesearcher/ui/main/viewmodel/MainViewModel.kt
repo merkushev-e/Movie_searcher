@@ -7,6 +7,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.gb.moviesearcher.ui.main.model.*
+import ru.gb.moviesearcher.ui.main.repository.RemoteDataSource
+import ru.gb.moviesearcher.ui.main.repository.Repository
+import ru.gb.moviesearcher.ui.main.repository.RepositoryImpl
 
 
 private const val SERVER_ERROR = "SERVER ERROR"

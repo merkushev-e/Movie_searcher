@@ -1,4 +1,4 @@
-package ru.gb.moviesearcher.ui.main.view
+package ru.gb.moviesearcher.ui.main.view.details
 
 
 import android.os.Build
@@ -8,10 +8,10 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
-import ru.gb.moviesearcher.BuildConfig
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.DetailFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.*
+import ru.gb.moviesearcher.ui.main.utils.showSnackBar
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.DetailsViewModel
 

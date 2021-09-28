@@ -1,4 +1,4 @@
-package ru.gb.moviesearcher.ui.main.view
+package ru.gb.moviesearcher.ui.main.view.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import ru.gb.moviesearcher.R
-import ru.gb.moviesearcher.ui.main.model.Movie
-import ru.gb.moviesearcher.ui.main.model.Movies
 import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {

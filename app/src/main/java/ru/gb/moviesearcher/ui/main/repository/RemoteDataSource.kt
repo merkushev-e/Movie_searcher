@@ -1,13 +1,18 @@
-package ru.gb.moviesearcher.ui.main.model
+package ru.gb.moviesearcher.ui.main.repository
 
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import kotlinx.coroutines.flow.callbackFlow
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gb.moviesearcher.BuildConfig
+import ru.gb.moviesearcher.ui.main.model.MovieAPI
+import ru.gb.moviesearcher.ui.main.model.MovieDTO
+import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
+import java.io.IOException
 
 
 class RemoteDataSource {
@@ -19,7 +24,25 @@ class RemoteDataSource {
                 GsonBuilder().setLenient().create()
             )
         )
+        .client((createOkHttpClient(MovieApiInterceptor())))
         .build().create(MovieAPI::class.java)
+
+    private fun createOkHttpClient(movieApiInterceptor: Interceptor): OkHttpClient {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(movieApiInterceptor)
+        httpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        return httpClient.build()
+
+
+    }
+    inner class MovieApiInterceptor : Interceptor {
+
+        @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            return chain.proceed(chain.request())
+        }
+    }
+
 
 
     fun getMovieDetails(movieId: Int, callback: Callback<MovieDTO>) {
@@ -34,11 +57,5 @@ class RemoteDataSource {
     }
 
 
-//    fun getWeatherDetails(requestLink: String, callback: Callback) {
-//        val builder: Request.Builder = Request.Builder().apply {
-//            url(requestLink)
-////            requestLink + "${id}?api_key=${BuildConfig.MOVIE_DB_API_KEY}"
-//        }
-//        OkHttpClient().newCall(builder.build()).enqueue(callback)
-//    }
+
 }
