@@ -33,8 +33,8 @@ class RemoteDataSource {
         httpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         return httpClient.build()
 
-
     }
+
     inner class MovieApiInterceptor : Interceptor {
 
         @Throws(IOException::class)
@@ -44,18 +44,17 @@ class RemoteDataSource {
     }
 
 
-
     fun getMovieDetails(movieId: Int, callback: Callback<MovieDTO>) {
         movieAPI.getMovie(movieId, BuildConfig.MOVIE_DB_API_KEY).enqueue(callback)
     }
-    fun getNewMovieDetails(page: Int, callback: Callback<MoviesListDTO>){
+
+    fun getNewMovieDetails(page: Int, callback: Callback<MoviesListDTO>) {
         movieAPI.getNewMovie(BuildConfig.MOVIE_DB_API_KEY, page).enqueue(callback)
     }
 
-    fun getPopularMovieDetails(page: Int, callback: Callback<MoviesListDTO>){
+    fun getPopularMovieDetails(page: Int, callback: Callback<MoviesListDTO>) {
         movieAPI.getPopularMovie(BuildConfig.MOVIE_DB_API_KEY, page).enqueue(callback)
     }
-
 
 
 }
