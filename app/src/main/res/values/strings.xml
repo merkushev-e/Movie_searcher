@@ -19,4 +19,12 @@
     <string name="rate_demo_6_9">6.9</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_title_history">History</string>
+    <string name="History">History</string>
+    <string name="new_movies">New Movies</string>
+    <string name="popular">Popular</string>
+    <string name="movie_name">Movie name</string>
+    <string name="_2020">2020</string>
 </resources>

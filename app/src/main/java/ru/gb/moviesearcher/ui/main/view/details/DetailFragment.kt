@@ -14,8 +14,7 @@ import ru.gb.moviesearcher.ui.main.model.*
 import ru.gb.moviesearcher.ui.main.utils.showSnackBar
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.DetailsViewModel
-
-
+import java.util.*
 
 
 class DetailFragment : Fragment() {
@@ -72,6 +71,8 @@ class DetailFragment : Fragment() {
                 binding.moviesImg.load("https://image.tmdb.org/t/p/w500/${state.movieDTO.poster_path}")
                 val movieDTO = state.movieDTO
 
+                saveMovie(movieDTO)
+
                 with(binding) {
                     headerTitle.text = movieDTO.title
                     moviesYear.text = movieDTO.release_date.toString().substring(0, 4)
@@ -95,6 +96,13 @@ class DetailFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun saveMovie(movieDTO: MovieDTO){
+        viewModel.saveMovieToDB(
+            Movie(movieDTO.id.toLong(), movieDTO.title, movieDTO.release_date, movieDTO.vote_average,"",
+                Date().time)
+        )
     }
 
 

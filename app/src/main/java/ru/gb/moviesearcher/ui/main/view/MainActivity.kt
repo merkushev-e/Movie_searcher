@@ -130,8 +130,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateFragment(id: Int): Boolean {
         when (id) {
-            R.id.nav_home -> {
-                Toast.makeText(applicationContext, "Home has opened", Toast.LENGTH_SHORT).show()
+            R.id.nav_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, HistoryFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
                 return true
             }
             R.id.nav_favourite -> {

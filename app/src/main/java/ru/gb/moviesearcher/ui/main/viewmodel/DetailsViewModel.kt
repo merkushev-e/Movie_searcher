@@ -8,9 +8,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 import ru.gb.moviesearcher.ui.main.model.*
-import ru.gb.moviesearcher.ui.main.repository.DetailsRepository
-import ru.gb.moviesearcher.ui.main.repository.DetailsRepositoryImpl
-import ru.gb.moviesearcher.ui.main.repository.RemoteDataSource
+import ru.gb.moviesearcher.ui.main.model.app.App
+import ru.gb.moviesearcher.ui.main.model.room.HistoryEntity
+import ru.gb.moviesearcher.ui.main.repository.*
+import java.util.*
 
 
 private const val SERVER_ERROR = "SERVER ERROR"
@@ -20,6 +21,7 @@ private const val CORRUPTED_DATA = "CORRUPTED DATA"
 class DetailsViewModel() : ViewModel() {
     private val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
     private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(App.getHistoryDao())
 
     val liveData: LiveData<AppState> = detailsLiveData
 
@@ -27,6 +29,7 @@ class DetailsViewModel() : ViewModel() {
         detailsLiveData.value = AppState.Loading
         detailsRepositoryImpl.getMovieDetailsFromServer(movieDTO.id, callBack)
     }
+
 
     private val callBack = object : Callback<MovieDTO> {
         override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
@@ -56,6 +59,11 @@ class DetailsViewModel() : ViewModel() {
             AppState.SuccessDetails(movieDTO)
         }
     }
+
+     fun saveMovieToDB(movie: Movie){
+        historyRepository.saveEntity(movie)
+    }
+
 
 
 }
