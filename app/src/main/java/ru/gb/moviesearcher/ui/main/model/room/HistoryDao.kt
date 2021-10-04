@@ -14,7 +14,7 @@ interface  HistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: HistoryEntity)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE )
     fun update(entity: HistoryEntity)
 
     @Delete

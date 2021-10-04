@@ -11,7 +11,7 @@ fun convertHistoryEntityToMovie(entityList: List<HistoryEntity>): List<Movie> {
             HistoryEntity.movieName,
             HistoryEntity.releaseDate,
             HistoryEntity.rate,
-            "",
+            HistoryEntity.note,
         HistoryEntity.timestamp
         )
     }
@@ -24,7 +24,6 @@ fun convertWeatherToEntity(movie: Movie): HistoryEntity {
         movie.releaseDate,
         movie.rate,
         Date().time,
-        ""
+        movie.note
     )
-
 }

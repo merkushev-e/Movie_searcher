@@ -44,6 +44,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
                     release_date_history.text = data.releaseDate.substring(0, 4)
                     rate_history.text = data.rate.toString()
                     time_history.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(data.timestamp))
+                    note_history.text = data.note
                 }
 
 

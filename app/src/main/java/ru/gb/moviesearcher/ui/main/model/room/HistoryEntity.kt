@@ -12,7 +12,7 @@ data class HistoryEntity(
     val releaseDate: String,
     val rate: Double,
     val timestamp: Long,
-    val note: String
+    var note: String
 )
 
 

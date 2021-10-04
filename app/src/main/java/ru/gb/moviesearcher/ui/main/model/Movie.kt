@@ -7,6 +7,6 @@ data class Movie (
     val movieName: String,
     val releaseDate: String,
     val rate: Double,
-    val note: String,
+    var note: String,
     val timestamp: Long
 )

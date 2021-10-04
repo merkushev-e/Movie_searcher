@@ -7,4 +7,5 @@ import ru.gb.moviesearcher.ui.main.model.room.HistoryEntity
 interface LocalRepository {
     fun getAllHistory(): List<Movie>
     fun saveEntity(movie: Movie)
+    fun updateEntity(movie: Movie)
 }
