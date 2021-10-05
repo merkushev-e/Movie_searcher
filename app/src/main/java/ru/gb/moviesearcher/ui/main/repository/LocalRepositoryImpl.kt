@@ -19,6 +19,7 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
         historyEntity = HistoryEntity(
             0,
             movie.movieName,
+            movie.id,
             movie.releaseDate,
             movie.rate,
             Date().time,
@@ -33,6 +34,7 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
             historyEntity = HistoryEntity(
                 0,
                 movie.movieName,
+                movie.id,
                 movie.releaseDate,
                 movie.rate,
                 Date().time,
@@ -40,8 +42,8 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
         } else{
             historyEntity.note = movie.note
         }
-
-        return localDataSource.update(historyEntity)
+//        return localDataSource.update(historyEntity)
+        return localDataSource.updateCurrent("test text",movie.id,)
     }
 
 

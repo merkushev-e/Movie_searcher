@@ -9,6 +9,7 @@ data class HistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val movieName: String,
+    val movie_Id: Long,
     val releaseDate: String,
     val rate: Double,
     val timestamp: Long,

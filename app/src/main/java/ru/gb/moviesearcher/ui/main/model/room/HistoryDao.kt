@@ -14,6 +14,9 @@ interface  HistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: HistoryEntity)
 
+    @Query("UPDATE HistoryEntity SET Note  = :note WHERE id = :movie_id")
+    fun updateCurrent(note: String, movie_id: Long )
+
     @Update(onConflict = OnConflictStrategy.REPLACE )
     fun update(entity: HistoryEntity)
 

@@ -21,6 +21,7 @@ fun convertWeatherToEntity(movie: Movie): HistoryEntity {
     return HistoryEntity(
         0,
         movie.movieName,
+        movie.id,
         movie.releaseDate,
         movie.rate,
         Date().time,
