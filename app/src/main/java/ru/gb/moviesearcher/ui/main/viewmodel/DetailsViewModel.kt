@@ -70,6 +70,9 @@ class DetailsViewModel() : ViewModel() {
     fun updateInDB(movie: Movie){
         historyRepository.updateEntity(movie)
     }
+    fun updateInDB2(movie: Movie){
+        historyRepository.updateEntity2(movie)
+    }
 
 
 

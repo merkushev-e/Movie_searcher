@@ -8,11 +8,11 @@ import java.util.*
 @Entity
 data class HistoryEntity(
     @PrimaryKey
-    val movie_Id: Long,
-    val movieName: String,
-    val releaseDate: String,
-    val rate: Double,
-    val timestamp: Long,
+    var movie_Id: Long,
+    var movieName: String,
+    var releaseDate: String,
+    var rate: Double,
+    var timestamp: Long,
     var note: String
 )
 

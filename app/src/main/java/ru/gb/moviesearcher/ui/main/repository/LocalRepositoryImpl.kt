@@ -44,8 +44,34 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
 
     }
 
+     override fun updateEntity2(movie: Movie) {
+        historyEntity = HistoryEntity(
+             movie.id,
+             movie.movieName,
+             movie.releaseDate,
+             movie.rate,
+             Date().time,
+             getNoteFromDb(movie.id)
+
+         )
+//         historyEntity.movie_Id = movie.id
+//         historyEntity.movieName =
+//         historyEntity.releaseDate =
+//         historyEntity.rate =
+//         historyEntity.timestamp =
+//         historyEntity.note = getNoteFromDb(movie.id)
+
+        return localDataSource.update(historyEntity)
+
+    }
+
     override fun updateCurrentEntity(movie: Movie) {
         return localDataSource.updateCurrent(movie.note,movie.id,)
+    }
+
+    override fun getNoteFromDb(movieId: Long): String {
+        val historyEntity = localDataSource.getDataByMovieId(movieId)
+        return historyEntity.note
     }
 
 

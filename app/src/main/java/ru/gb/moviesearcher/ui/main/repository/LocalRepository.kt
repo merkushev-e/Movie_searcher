@@ -8,6 +8,7 @@ interface LocalRepository {
     fun getAllHistory(): List<Movie>
     fun saveEntity(movie: Movie)
     fun updateEntity(movie: Movie)
+    fun updateEntity2(movie: Movie)
     fun updateCurrentEntity(movie: Movie)
-
+    fun getNoteFromDb(movieId: Long): String
 }

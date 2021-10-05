@@ -88,6 +88,7 @@ class DetailFragment : Fragment() {
                     }
                 }
                 saveMovie(movieDTO)
+                updateMovie(movieDTO)
 
             }
 
@@ -106,7 +107,7 @@ class DetailFragment : Fragment() {
     }
 
 
-    private fun updateCurrentMovie(movieDTO: MovieDTO?, note: String) {
+    private fun updateCurrentMovie (movieDTO: MovieDTO?, note: String) {
         if (movieDTO != null) {
             viewModel.updateInDB(
                 Movie(
@@ -124,7 +125,7 @@ class DetailFragment : Fragment() {
 
     private fun updateMovie(movieDTO: MovieDTO?) {
         if (movieDTO != null) {
-            viewModel.updateInDB(
+            viewModel.updateInDB2(
                 Movie(
                     movieDTO.id.toLong(),
                     movieDTO.title,
@@ -136,6 +137,8 @@ class DetailFragment : Fragment() {
             )
         }
     }
+
+
 
 
     private fun saveMovie(movieDTO: MovieDTO?) {
