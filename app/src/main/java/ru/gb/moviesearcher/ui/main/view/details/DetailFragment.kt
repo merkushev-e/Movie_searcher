@@ -106,7 +106,7 @@ class DetailFragment : Fragment() {
     }
 
 
-    private fun updateMovie(movieDTO: MovieDTO?, note: String) {
+    private fun updateCurrentMovie(movieDTO: MovieDTO?, note: String) {
         if (movieDTO != null) {
             viewModel.updateInDB(
                 Movie(
@@ -121,6 +121,22 @@ class DetailFragment : Fragment() {
         }
 
     }
+
+    private fun updateMovie(movieDTO: MovieDTO?) {
+        if (movieDTO != null) {
+            viewModel.updateInDB(
+                Movie(
+                    movieDTO.id.toLong(),
+                    movieDTO.title,
+                    movieDTO.release_date,
+                    movieDTO.vote_average,
+                    "",
+                    Date().time
+                )
+            )
+        }
+    }
+
 
     private fun saveMovie(movieDTO: MovieDTO?) {
         if (movieDTO != null) {
@@ -141,11 +157,16 @@ class DetailFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onStart() {
         super.onStart()
         binding.buttonSaveNote.setOnClickListener {
 
-            updateMovie(movieDTO, binding.editTextNotes.text.toString())
+            updateCurrentMovie(movieDTO, binding.editTextNotes.text.toString())
         }
 
     }

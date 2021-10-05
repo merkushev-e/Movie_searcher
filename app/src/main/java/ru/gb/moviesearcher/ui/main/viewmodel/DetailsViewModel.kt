@@ -63,6 +63,10 @@ class DetailsViewModel() : ViewModel() {
      fun saveMovieToDB(movie: Movie){
         historyRepository.saveEntity(movie)
     }
+    fun updateCurrentInDB(movie: Movie){
+        historyRepository.updateCurrentEntity(movie)
+    }
+
     fun updateInDB(movie: Movie){
         historyRepository.updateEntity(movie)
     }

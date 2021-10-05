@@ -11,4 +11,10 @@
     <dimen name="margin_5_dp">5dp</dimen>
     <dimen name="hairline">1dp</dimen>
     <dimen name="margin_10_dp">10dp</dimen>
+    <dimen name="guideline_base_size">8dp</dimen>
+    <dimen name="title_margin_start">16dp</dimen>
+    <dimen name="title_base_margin">4dp</dimen>
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="settings_item_text_size">16sp</dimen>
+    <dimen name="settings_switch_padding">16dp</dimen>
 </resources>

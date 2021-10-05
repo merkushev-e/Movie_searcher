@@ -17,9 +17,8 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
 
     override fun saveEntity(movie: Movie) {
         historyEntity = HistoryEntity(
-            0,
-            movie.movieName,
             movie.id,
+            movie.movieName,
             movie.releaseDate,
             movie.rate,
             Date().time,
@@ -32,9 +31,8 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
     override fun updateEntity(movie: Movie) {
         if (historyEntity == null){
             historyEntity = HistoryEntity(
-                0,
-                movie.movieName,
                 movie.id,
+                movie.movieName,
                 movie.releaseDate,
                 movie.rate,
                 Date().time,
@@ -42,8 +40,12 @@ class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalReposi
         } else{
             historyEntity.note = movie.note
         }
-//        return localDataSource.update(historyEntity)
-        return localDataSource.updateCurrent("test text",movie.id,)
+        return localDataSource.update(historyEntity)
+
+    }
+
+    override fun updateCurrentEntity(movie: Movie) {
+        return localDataSource.updateCurrent(movie.note,movie.id,)
     }
 
 

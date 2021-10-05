@@ -7,7 +7,7 @@ import java.util.*
 fun convertHistoryEntityToMovie(entityList: List<HistoryEntity>): List<Movie> {
     return entityList.map { HistoryEntity ->
         Movie(
-            HistoryEntity.id,
+            HistoryEntity.movie_Id,
             HistoryEntity.movieName,
             HistoryEntity.releaseDate,
             HistoryEntity.rate,
@@ -19,9 +19,8 @@ fun convertHistoryEntityToMovie(entityList: List<HistoryEntity>): List<Movie> {
 
 fun convertWeatherToEntity(movie: Movie): HistoryEntity {
     return HistoryEntity(
-        0,
-        movie.movieName,
         movie.id,
+        movie.movieName,
         movie.releaseDate,
         movie.rate,
         Date().time,
