@@ -63,9 +63,8 @@ class DetailsViewModel() : ViewModel() {
     }
 
     fun saveMovieToDB(movie: Movie) {
-        Thread {
+
             historyRepository.saveEntity(movie)
-        }
     }
 
     fun updateCurrentInDB(movie: Movie) {
@@ -73,15 +72,12 @@ class DetailsViewModel() : ViewModel() {
     }
 
     fun updateInDB(movie: Movie) {
-        Thread {
+
             historyRepository.updateEntity(movie)
-        }.start()
     }
 
     fun updateInDB2(movie: Movie) {
-        Thread {
             historyRepository.updateEntityWhenOpen(movie)
-        }.start()
     }
 
 
