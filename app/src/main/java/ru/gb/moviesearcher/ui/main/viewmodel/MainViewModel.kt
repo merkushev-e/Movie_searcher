@@ -17,7 +17,6 @@ private const val REQUEST_ERROR = "REQUEST ERROR"
 
 
 class MainViewModel : ViewModel() {
-
     private val repositoryImpl: Repository = RepositoryImpl(RemoteDataSource())
     private val liveDataToObserveNewMovies: MutableLiveData<AppState> = MutableLiveData()
     private val liveDataToObservePopularMovies: MutableLiveData<AppState> = MutableLiveData()

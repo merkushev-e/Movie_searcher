@@ -1,5 +1,7 @@
 package ru.gb.moviesearcher.ui.main.view.main
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -13,6 +15,8 @@ import ru.gb.moviesearcher.ui.main.view.details.DetailFragment
 import ru.gb.moviesearcher.ui.main.utils.hide
 import ru.gb.moviesearcher.ui.main.utils.show
 import ru.gb.moviesearcher.ui.main.utils.showSnackBar
+import ru.gb.moviesearcher.ui.main.view.CHILD_MODE
+import ru.gb.moviesearcher.ui.main.view.CHILD_MODE_KEY
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
 
@@ -56,6 +60,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+
 
         adapter.listener = MainAdapter.OnItemViewClicksListener { movie -> showContent(movie) }
 
@@ -103,14 +109,17 @@ class MainFragment : Fragment() {
     }
 
     private fun renderData(appState: AppState, isNewMovies: Boolean) {
+        val preferences: SharedPreferences = requireActivity().getSharedPreferences(CHILD_MODE,MODE_PRIVATE)
+        val isChecked: Boolean = preferences.getBoolean(CHILD_MODE_KEY, false)
+
         when (appState) {
             is AppState.Loading -> binding.loadingLayout.show()
             is AppState.Success -> {
                 binding.loadingLayout.hide()
                 if (isNewMovies) {
-                    adapter.setMovie(appState.movieDTO.results)
+                    adapter.setMovie(appState.movieDTO.results, isChecked)
                 } else {
-                    adapterSecond.setMovie(appState.movieDTO.results)
+                    adapterSecond.setMovie(appState.movieDTO.results, isChecked)
                 }
             }
             is AppState.Error -> {

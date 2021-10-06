@@ -12,6 +12,7 @@ import ru.gb.moviesearcher.ui.main.model.app.App
 import ru.gb.moviesearcher.ui.main.model.room.HistoryEntity
 import ru.gb.moviesearcher.ui.main.repository.*
 import java.util.*
+import kotlin.concurrent.thread
 
 
 private const val SERVER_ERROR = "SERVER ERROR"
@@ -53,27 +54,35 @@ class DetailsViewModel() : ViewModel() {
     private fun checkResponse(serverResponse: MovieDTO): AppState {
         val movieDTO: MovieDTO = serverResponse
         return if (movieDTO.id == null || movieDTO.overview == null || movieDTO.release_date == null
-            || movieDTO.title == null || movieDTO.vote_average == null){
+            || movieDTO.title == null || movieDTO.vote_average == null
+        ) {
             AppState.Error(Throwable(CORRUPTED_DATA))
-        } else{
+        } else {
             AppState.SuccessDetails(movieDTO)
         }
     }
 
-     fun saveMovieToDB(movie: Movie){
-        historyRepository.saveEntity(movie)
+    fun saveMovieToDB(movie: Movie) {
+        Thread {
+            historyRepository.saveEntity(movie)
+        }
     }
-    fun updateCurrentInDB(movie: Movie){
+
+    fun updateCurrentInDB(movie: Movie) {
         historyRepository.updateCurrentEntity(movie)
     }
 
-    fun updateInDB(movie: Movie){
-        historyRepository.updateEntity(movie)
-    }
-    fun updateInDB2(movie: Movie){
-        historyRepository.updateEntity2(movie)
+    fun updateInDB(movie: Movie) {
+        Thread {
+            historyRepository.updateEntity(movie)
+        }.start()
     }
 
+    fun updateInDB2(movie: Movie) {
+        Thread {
+            historyRepository.updateEntityWhenOpen(movie)
+        }.start()
+    }
 
 
 }

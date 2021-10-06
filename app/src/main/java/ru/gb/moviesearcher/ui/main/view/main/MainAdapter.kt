@@ -1,5 +1,6 @@
 package ru.gb.moviesearcher.ui.main.view.main
 
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,20 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     var moviesData: List<MoviesListDTO.MovieList> = listOf()
 
-    fun setMovie(movies: List<MoviesListDTO.MovieList>){
-        moviesData = movies
+    fun setMovie(movies: List<MoviesListDTO.MovieList>, isChecked: Boolean){
+
+        moviesData = if (isChecked){
+            val result = mutableListOf<MoviesListDTO.MovieList>()
+            movies.forEach {
+                if(!it.adult) result.add(it)
+            }
+
+            result
+
+        } else{
+            movies
+        }
+
         notifyDataSetChanged()
     }
 

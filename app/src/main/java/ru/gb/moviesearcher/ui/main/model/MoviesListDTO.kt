@@ -15,6 +15,7 @@ data class MoviesListDTO(
         val id: Int = 1,
         val overview: String = "",
         val poster_path: String = "",
+        val adult: Boolean = false,
         val release_date: String = "",
         val title: String = "",
         val vote_average: Float = 0.0F

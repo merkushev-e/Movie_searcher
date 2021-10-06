@@ -9,69 +9,53 @@ import java.util.*
 
 class LocalRepositoryImpl(private val localDataSource: HistoryDao) : LocalRepository {
 
-   private lateinit var historyEntity: HistoryEntity
+    private lateinit var historyEntity: HistoryEntity
     override fun getAllHistory(): List<Movie> {
         return convertHistoryEntityToMovie(localDataSource.all())
     }
 
 
     override fun saveEntity(movie: Movie) {
+        historyEntity = convertWeatherToEntity(movie)
+        return localDataSource.insert(historyEntity)
+
+    }
+
+    override fun updateEntity(movie: Movie) {
+        historyEntity.note = movie.note
+        return localDataSource.update(historyEntity)
+
+    }
+
+    override fun updateEntityWhenOpen(movie: Movie) {
         historyEntity = HistoryEntity(
             movie.id,
             movie.movieName,
             movie.releaseDate,
             movie.rate,
             Date().time,
-            movie.note)
+            getNoteFromDb(movie.id)
 
-        return localDataSource.insert((historyEntity))
-
-    }
-
-    override fun updateEntity(movie: Movie) {
-        if (historyEntity == null){
-            historyEntity = HistoryEntity(
-                movie.id,
-                movie.movieName,
-                movie.releaseDate,
-                movie.rate,
-                Date().time,
-                movie.note)
-        } else{
-            historyEntity.note = movie.note
-        }
-        return localDataSource.update(historyEntity)
-
-    }
-
-     override fun updateEntity2(movie: Movie) {
-        historyEntity = HistoryEntity(
-             movie.id,
-             movie.movieName,
-             movie.releaseDate,
-             movie.rate,
-             Date().time,
-             getNoteFromDb(movie.id)
-
-         )
-//         historyEntity.movie_Id = movie.id
-//         historyEntity.movieName =
-//         historyEntity.releaseDate =
-//         historyEntity.rate =
-//         historyEntity.timestamp =
-//         historyEntity.note = getNoteFromDb(movie.id)
-
+        )
         return localDataSource.update(historyEntity)
 
     }
 
     override fun updateCurrentEntity(movie: Movie) {
-        return localDataSource.updateCurrent(movie.note,movie.id,)
+        return localDataSource.updateCurrent(movie.note, movie.id)
     }
 
     override fun getNoteFromDb(movieId: Long): String {
         val historyEntity = localDataSource.getDataByMovieId(movieId)
-        return historyEntity.note
+
+        if(historyEntity == null){
+            historyEntity.note = ""
+        }
+        return  historyEntity.note
+    }
+
+    override fun deleteAllHistory() {
+        localDataSource.deleteAll()
     }
 
 

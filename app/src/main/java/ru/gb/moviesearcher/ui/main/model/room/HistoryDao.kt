@@ -24,6 +24,9 @@ interface  HistoryDao {
     @Update(onConflict = OnConflictStrategy.REPLACE )
     fun update(entity: HistoryEntity)
 
+    @Query("DELETE FROM HistoryEntity")
+    fun deleteAll()
+
     @Delete
     fun delete(entity: HistoryEntity)
 

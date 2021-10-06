@@ -19,4 +19,8 @@ class HistoryViewModel(): ViewModel(){
         historyLiveDataToObserve.value = AppState.Loading
         historyLiveDataToObserve.value = AppState.SuccessHistory(historyRepository.getAllHistory())
     }
+
+    fun deleteAllHistory(){
+        historyRepository.deleteAllHistory()
+    }
 }

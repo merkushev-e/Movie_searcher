@@ -1,10 +1,9 @@
-package ru.gb.moviesearcher.ui.main.view
+package ru.gb.moviesearcher.ui.main.view.history
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.detail_fragment.view.*
 import kotlinx.android.synthetic.main.history_fragment_item.view.*
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.ui.main.model.Movie

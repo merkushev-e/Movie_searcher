@@ -1,10 +1,9 @@
-package ru.gb.moviesearcher.ui.main.view
+package ru.gb.moviesearcher.ui.main.view.history
 
 import android.os.Bundle
+import android.view.*
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.history_fragment.*
@@ -31,8 +30,10 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        setHasOptionsMenu(true)
         _binding = HistoryFragmentBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onDestroyView() {
@@ -77,6 +78,18 @@ class HistoryFragment : Fragment() {
             }
 
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_history, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete_history){
+            viewModel.deleteAllHistory()
+        }
+        viewModel.getAllHistory()
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
