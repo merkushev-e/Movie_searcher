@@ -18,8 +18,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.ActivityMainBinding
+import ru.gb.moviesearcher.ui.main.view.history.HistoryFragment
 import ru.gb.moviesearcher.ui.main.view.main.MainFragment
 
+const val CHILD_MODE= "Child_Mode"
+const val CHILD_MODE_KEY ="KEYChildModeKey"
 
 class MainActivity : AppCompatActivity() {
 
@@ -94,7 +97,13 @@ class MainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.action_settings -> {
-                Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, SettingsFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
                 return true
             }
         }
@@ -130,8 +139,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateFragment(id: Int): Boolean {
         when (id) {
-            R.id.nav_home -> {
-                Toast.makeText(applicationContext, "Home has opened", Toast.LENGTH_SHORT).show()
+            R.id.nav_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, HistoryFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
                 return true
             }
             R.id.nav_favourite -> {

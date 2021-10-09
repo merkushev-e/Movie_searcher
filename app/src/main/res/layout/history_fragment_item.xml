@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/error_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/movie_name_history"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5_dp"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:lines="2"
+            tools:text="Movie Name" />
+
+        <TextView
+            android:id="@+id/release_date_history"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5_dp"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            tools:text="2020" />
+
+        <TextView
+            android:id="@+id/rate_history"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_5_dp"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            app:drawableLeftCompat="@drawable/ic_baseline_star_24"
+            tools:text="Rate" />
+
+        <TextView
+            android:id="@+id/time_history"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_10_dp"
+            android:layout_marginTop="@dimen/margin_5_dp"
+            android:layout_marginEnd="@dimen/margin_5_dp"
+            tools:text="2012.12.11" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/note_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_5_dp"
+        android:layout_marginTop="@dimen/margin_5_dp"
+        tools:text="Note" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hairline"
+        android:layout_marginTop="@dimen/margin_5_dp"
+        android:background="@color/teal_700" />
+</LinearLayout>

@@ -3,6 +3,8 @@ package ru.gb.moviesearcher.ui.main.view.details
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -14,8 +16,7 @@ import ru.gb.moviesearcher.ui.main.model.*
 import ru.gb.moviesearcher.ui.main.utils.showSnackBar
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.DetailsViewModel
-
-
+import java.util.*
 
 
 class DetailFragment : Fragment() {
@@ -33,10 +34,12 @@ class DetailFragment : Fragment() {
         ViewModelProvider(this).get(DetailsViewModel::class.java)
     }
 
+
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
-    private lateinit var movie: MoviesListDTO.MovieList
-
+    private lateinit var movieList: MoviesListDTO.MovieList
+    private var movieDTO: MovieDTO? = null
+    private var movie: Movie? = null
 
 
     override fun onCreateView(
@@ -48,15 +51,16 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       movie = arguments?.getParcelable(MOVIE_EXTRA) ?: MoviesListDTO.MovieList()
+        movieList = arguments?.getParcelable(MOVIE_EXTRA) ?: MoviesListDTO.MovieList()
+        viewModel.getMovieFromRemoteSource(movieList)
         viewModel.liveData.observe(viewLifecycleOwner) { AppState ->
             renderData(AppState)
         }
-        viewModel.getMovieFromRemoteSource(movie)
+
     }
 
 
@@ -70,17 +74,22 @@ class DetailFragment : Fragment() {
                 binding.mainView.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
                 binding.moviesImg.load("https://image.tmdb.org/t/p/w500/${state.movieDTO.poster_path}")
-                val movieDTO = state.movieDTO
+
+                movieDTO = state.movieDTO
+
 
                 with(binding) {
-                    headerTitle.text = movieDTO.title
-                    moviesYear.text = movieDTO.release_date.toString().substring(0, 4)
-                    movieRatingCount.text = movieDTO.vote_average.toString()
-                    movieDescription.text = movieDTO.overview
-                    for (el in movieDTO.genres) {
+                    headerTitle.text = movieDTO?.title
+                    moviesYear.text = movieDTO?.release_date.toString().substring(0, 4)
+                    movieRatingCount.text = movieDTO?.vote_average.toString()
+                    movieDescription.text = movieDTO?.overview
+                    for (el in movieDTO?.genres!!) {
                         movieGenre.text = el.name.toString()
                     }
                 }
+                saveMovie(movieDTO)
+                updateMovie(movieDTO)
+
             }
 
             is AppState.Error -> {
@@ -89,7 +98,7 @@ class DetailFragment : Fragment() {
                 binding.mainView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
-                    {viewModel.getMovieFromRemoteSource(movie)}
+                    { viewModel.getMovieFromRemoteSource(movieList) }
                     //            requestLink + "${id}?api_key=${BuildConfig.MOVIE_DB_API_KEY}"
                 )
             }
@@ -97,6 +106,73 @@ class DetailFragment : Fragment() {
 
     }
 
+
+    private fun updateCurrentMovie (movieDTO: MovieDTO?, note: String) {
+        if (movieDTO != null) {
+            viewModel.updateInDB(
+                Movie(
+                    movieDTO.id.toLong(),
+                    movieDTO.title,
+                    movieDTO.release_date,
+                    movieDTO.vote_average,
+                    note,
+                    Date().time
+                )
+            )
+        }
+
+    }
+
+    private fun updateMovie(movieDTO: MovieDTO?) {
+        if (movieDTO != null) {
+            viewModel.updateInDB2(
+                Movie(
+                    movieDTO.id.toLong(),
+                    movieDTO.title,
+                    movieDTO.release_date,
+                    movieDTO.vote_average,
+                    "",
+                    Date().time
+                )
+            )
+        }
+    }
+
+
+
+
+    private fun saveMovie(movieDTO: MovieDTO?) {
+        if (movieDTO != null) {
+            viewModel.saveMovieToDB(
+                Movie(
+                    movieDTO.id.toLong(),
+                    movieDTO.title,
+                    movieDTO.release_date,
+                    movieDTO.vote_average,
+                    "",
+                    Date().time
+                )
+            )
+        }
+    }
+
+    private fun getText() {
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.buttonSaveNote.setOnClickListener {
+
+            updateCurrentMovie(movieDTO, binding.editTextNotes.text.toString())
+        }
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()
