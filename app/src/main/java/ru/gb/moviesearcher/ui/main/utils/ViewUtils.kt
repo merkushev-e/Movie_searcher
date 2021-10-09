@@ -1,4 +1,4 @@
-package ru.gb.moviesearcher.ui.main.view
+package ru.gb.moviesearcher.ui.main.utils
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
