@@ -1,6 +1,7 @@
 package ru.gb.moviesearcher.ui.main.view
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
@@ -11,8 +12,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.main_content.*
 import ru.gb.moviesearcher.R
@@ -26,17 +31,41 @@ class ContactsFragment : Fragment() {
     private val binding get() = _binding!!
 
 
+    private val requestPermissionLauncher  =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+            when {
+                result -> getContacts()
+                !ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifest.permission.READ_CONTACTS) ->{
+                    Toast.makeText(context,
+                        "Go to settings and allow permission",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                else -> {
+                    Toast.makeText(context,
+                        "You need to allow access to contacts",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+
+                }
+
+            }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = ContactsFragmentBinding.inflate(layoutInflater, container,false)
+        _binding = ContactsFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         checkPermission()
     }
 
@@ -46,22 +75,20 @@ class ContactsFragment : Fragment() {
     }
 
     private fun checkPermission() {
-        context?.let {context ->
+        context?.let { context ->
             when {
                 ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) ==
                         PackageManager.PERMISSION_GRANTED -> {
-
                     getContacts()
                 }
 
                 shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS) -> {
                     AlertDialog.Builder(context)
                         .setTitle("Access to contacts")
-                        .setMessage("Explanation")
-                        .setPositiveButton("Allow") { _, _ ->
+                        .setMessage("Explanation ...")
+                        .setPositiveButton("OK") { _, _ ->
                             requestPermission()
                         }
-                        .setNegativeButton("Deny") { dialog, _ -> dialog.dismiss() }
                         .create()
                         .show()
                 }
@@ -72,14 +99,17 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private fun requestPermission() {
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
+//    private fun requestPermission() {
+//        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
+//    }
+
+
+    private fun requestPermission (){
+        requestPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
     }
 
-
-
     private fun getContacts() {
-        context?.let {context ->
+        context?.let { context ->
             val contentResolver: ContentResolver = context.contentResolver
             val cursorWithContacts: Cursor? = contentResolver.query(
                 ContactsContract.Contacts.CONTENT_URI,
@@ -112,34 +142,35 @@ class ContactsFragment : Fragment() {
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                ) {
-                    getContacts()
-                } else {
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        when (requestCode) {
+//            REQUEST_CODE -> {
+//                if ((grantResults.isNotEmpty() &&
+//                            grantResults[0] == PackageManager.PERMISSION_GRANTED)
+//                ) {
+//                    getContacts()
+//                } else {
+//
+//                    context?.let {
+//                        AlertDialog.Builder(it)
+//                            .setTitle("Access to contacts")
+//                            .setMessage("Explanation")
+//                            .setNegativeButton("Close") { dialog, _ -> dialog.dismiss() }
+//                            .create()
+//                            .show()
+//                    }
+//                }
+//                return
+//            }
+//        }
+//
+//
+//    }
 
-                    context?.let {
-                        AlertDialog.Builder(it)
-                            .setTitle("Access to contacts")
-                            .setMessage("Explanation")
-                            .setNegativeButton("Close") { dialog, _ -> dialog.dismiss() }
-                            .create()
-                            .show()
-                    }
-                }
-                return
-            }
-        }
-
-
-    }
     companion object {
         @JvmStatic
         fun newInstance() = ContactsFragment()
