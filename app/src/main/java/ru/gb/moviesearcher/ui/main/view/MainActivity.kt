@@ -27,8 +27,6 @@ const val CHILD_MODE_KEY ="KEYChildModeKey"
 class MainActivity : AppCompatActivity() {
 
 
-
-
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +103,14 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                 }
                 return true
+            }
+            R.id.action_contacts ->{
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, ContactsFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
