@@ -31,28 +31,33 @@ class ContactsFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private val requestPermissionLauncher  =
+    private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
             when {
                 result -> getContacts()
-                !ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifest.permission.READ_CONTACTS) ->{
-                    Toast.makeText(context,
+                !ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.READ_CONTACTS
+                ) -> {
+                    Toast.makeText(
+                        context,
                         "Go to settings and allow permission",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
                 else -> {
-                    Toast.makeText(context,
+                    Toast.makeText(
+                        context,
                         "You need to allow access to contacts",
                         Toast.LENGTH_SHORT
                     ).show()
 
                 }
 
-                }
-
             }
+
+        }
 
 
     override fun onCreateView(
@@ -104,7 +109,7 @@ class ContactsFragment : Fragment() {
 //    }
 
 
-    private fun requestPermission (){
+    private fun requestPermission() {
         requestPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
     }
 
