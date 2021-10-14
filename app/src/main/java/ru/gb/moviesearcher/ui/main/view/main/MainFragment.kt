@@ -1,13 +1,26 @@
 package ru.gb.moviesearcher.ui.main.view.main
 
+import android.Manifest
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.main_fragment.*
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.MainFragmentBinding
 import ru.gb.moviesearcher.ui.main.model.MoviesListDTO
@@ -19,6 +32,7 @@ import ru.gb.moviesearcher.ui.main.view.CHILD_MODE
 import ru.gb.moviesearcher.ui.main.view.CHILD_MODE_KEY
 import ru.gb.moviesearcher.ui.main.viewmodel.AppState
 import ru.gb.moviesearcher.ui.main.viewmodel.MainViewModel
+import java.io.IOException
 
 private const val FIRST_PAGE = 1;
 
@@ -34,6 +48,9 @@ class MainFragment : Fragment() {
     }
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
+
+
+
 
     private val adapter: MainAdapter by lazy {
         MainAdapter()
@@ -132,6 +149,9 @@ class MainFragment : Fragment() {
             }
         }
     }
+
+
+
 
 
     override fun onDestroy() {

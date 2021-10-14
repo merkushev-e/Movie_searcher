@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/layout/contacts_fragment.xml" value="0.22395833333333334" />
+        <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/layout/maps_fragment.xml" value="0.21458333333333332" />
         <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/layout/settings_fragment.xml" value="0.371875" />
         <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/menu/delete_history.xml" value="0.371875" />
+        <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/menu/main.xml" value="0.22395833333333334" />
+        <entry key="..\:/Android/Kotlin/MovieSearcher/app/src/main/res/menu/main_drawer.xml" value="0.22395833333333334" />
       </map>
     </option>
   </component>
