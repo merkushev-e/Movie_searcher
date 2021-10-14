@@ -1,7 +1,10 @@
 package ru.gb.moviesearcher.ui.main.model.app
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import ru.gb.moviesearcher.ui.main.model.room.HistoryDao
 import ru.gb.moviesearcher.ui.main.model.room.HistoryDataBase
 
@@ -10,6 +13,12 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         appInstance = this
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {task ->
+            if (task.isSuccessful){
+                Log.d("MyFirebaseMessaging", "token = ${task.result.toString()}")
+            }
+        }
     }
 
     companion object {

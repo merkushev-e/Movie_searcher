@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "979079088093",
+    "project_id": "movie-searcher-28dce",
+    "storage_bucket": "movie-searcher-28dce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979079088093:android:67e46154724d08c04b1834",
+        "android_client_info": {
+          "package_name": "ru.gb.moviesearcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979079088093-1bp3jlqdi1nfsd5iat3b6bc9ni87plhd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMpHzsU5R5BJImRcyjet38VgjatqBRtCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979079088093-1bp3jlqdi1nfsd5iat3b6bc9ni87plhd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
