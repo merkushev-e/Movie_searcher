@@ -65,9 +65,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
     }
 
     override fun onNewToken(token: String) {
-        //Отправить токен на сервер
 
-        Log.d("MyFirebaseMessaging", "Refreshed token: $token")
+        Log.d("MyFirebaseMessaging", "token: $token")
     }
 
     companion object {
