@@ -30,7 +30,6 @@ android {
             Properties properties = new Properties()
             properties.load(project.rootProject.file("passwords.properties").newDataInputStream())
             def mypassword = properties.getProperty("password", "")
-
             storeFile file("KeyReleaseMovie.jks")
             storePassword mypassword
             keyAlias 'MovieSearcherRelease'
