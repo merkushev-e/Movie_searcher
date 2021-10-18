@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import ru.gb.moviesearcher.R
 import ru.gb.moviesearcher.databinding.ActivityMainBinding
+import ru.gb.moviesearcher.ui.main.view.googlemaps.MapsFragment
 import ru.gb.moviesearcher.ui.main.view.history.HistoryFragment
 import ru.gb.moviesearcher.ui.main.view.main.MainFragment
 
@@ -27,13 +28,10 @@ const val CHILD_MODE_KEY ="KEYChildModeKey"
 class MainActivity : AppCompatActivity() {
 
 
-
-
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-//        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -106,6 +104,23 @@ class MainActivity : AppCompatActivity() {
                 }
                 return true
             }
+
+            R.id.action_find_on_map ->{
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, MapsFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
+            }
+            R.id.action_contacts ->{
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, ContactsFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -162,6 +177,8 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

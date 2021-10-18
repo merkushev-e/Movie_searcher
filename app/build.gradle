@@ -3,8 +3,10 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 
 }
+
 
 android {
     compileSdkVersion 30
@@ -20,17 +22,37 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+
+
+        release {
+
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file("passwords.properties").newDataInputStream())
+            def mypassword = properties.getProperty("password", "")
+            storeFile file("KeyReleaseMovie.jks")
+            storePassword mypassword
+            keyAlias 'MovieSearcherRelease'
+            keyPassword mypassword
+        }
+    }
+
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def apiKey  = properties.getProperty("movie_db_api_key", "")
         it.buildConfigField "String", "MOVIE_DB_API_KEY", apiKey
     }
-
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"RELEASE"'
+        }
+
+        debug {
+            versionNameSuffix "-debug"
         }
     }
     compileOptions {
@@ -43,6 +65,7 @@ android {
     buildFeatures{
         viewBinding true
     }
+
 }
 
 dependencies {
@@ -50,6 +73,8 @@ dependencies {
     //Room
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
     kapt 'androidx.room:room-compiler:2.3.0'
 
     //interceptor
